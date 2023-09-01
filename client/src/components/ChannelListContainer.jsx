@@ -3,8 +3,8 @@ import { ChannelList, useChatContext } from 'stream-chat-react';
 import Cookies from 'universal-cookie';
 
 import { ChannelSearch, TeamChannelList, TeamChannelPreview } from './';
-import HospitalIcon from '../assets/hospital.png'
-import LogoutIcon from '../assets/logout.png'
+import {RiFlightTakeoffLine} from "react-icons/ri"
+import {TbLogout} from "react-icons/tb"
 
 const cookies = new Cookies();
 
@@ -12,12 +12,14 @@ const SideBar = ({ logout }) => (
     <div className="channel-list__sidebar">
         <div className="channel-list__sidebar__icon1">
             <div className="icon1__inner">
-                <img src={HospitalIcon} alt="Hospital" width="30" />
+              
+                <RiFlightTakeoffLine width={180} height={40} style={{width:"200px", fontSize:"30px"}} />
             </div>
         </div>
         <div className="channel-list__sidebar__icon2">
             <div className="icon1__inner" onClick={logout}>
-                <img src={LogoutIcon} alt="Logout" width="30" />
+                {/* <img src={LogoutIcon} alt="Logout" width="30" /> */}
+                <TbLogout style={{fontSize:"30px", marginLeft:"3px"}}/>
             </div>
         </div>
     </div>
@@ -25,7 +27,7 @@ const SideBar = ({ logout }) => (
 
 const CompanyHeader = () => (
     <div className="channel-list__header">
-        <p className="channel-list__header__text">Medical Pager</p>
+        <p className="channel-list__header__text">Travel App</p>
     </div>
 )
 
