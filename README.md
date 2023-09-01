@@ -1,3 +1,3 @@
-# Chat-App
+# Note
 
 Use Node 16.x
