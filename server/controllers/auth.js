@@ -2,6 +2,8 @@ const { connect } = require('getstream');
 const bcrypt = require('bcrypt');
 const StreamChat = require('stream-chat').StreamChat;
 const crypto = require('crypto');
+const {faker} = require('@faker-js/faker');
+const randomstring = require('randomstring');
 
 require('dotenv').config();
 
@@ -12,6 +14,32 @@ const app_id = process.env.STREAM_APP_ID;
 const signup = async (req, res) => {
     try {
         const { fullName, username, password, phoneNumber } = req.body;
+
+        const userId = crypto.randomBytes(16).toString('hex');
+
+        const serverClient = connect(api_key, api_secret, app_id);
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const token = serverClient.createUserToken(userId);
+
+        res.status(200).json({ token, fullName, username, userId, hashedPassword, phoneNumber });
+    } catch (error) {
+        console.log(error);
+
+        res.status(500).json({ message: error });
+    }
+};
+
+const guestLogin = async (req, res) => {
+    try {
+        const fullName = faker.person.fullName();
+
+        const username = faker.internet.userName();
+    
+        const password = randomstring.generate(8);
+    
+        const phoneNumber = faker.phone.number()
 
         const userId = crypto.randomBytes(16).toString('hex');
 
@@ -56,4 +84,4 @@ const login = async (req, res) => {
     }
 };
 
-module.exports = { signup, login }
+module.exports = { signup, login, guestLogin }

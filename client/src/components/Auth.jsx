@@ -15,6 +15,10 @@ const initialState = {
     avatarURL: '',
 }
 
+const URL = 'https://server-6u91.onrender.com/auth';
+
+// const URL = 'http://localhost:5000/auth';
+
 const Auth = () => {
     const [form, setForm] = useState(initialState);
     const [isSignup, setIsSignup] = useState(true);
@@ -27,8 +31,6 @@ const Auth = () => {
         e.preventDefault();
 
         const { username, password, phoneNumber, avatarURL } = form;
-
-        const URL = 'https://server-6u91.onrender.com/auth';
 
         const { data: { token, userId, hashedPassword, fullName } } = await axios.post(`${URL}/${isSignup ? 'signup' : 'login'}`, {
             username, password, fullName: form.fullName, phoneNumber, avatarURL,
@@ -44,6 +46,19 @@ const Auth = () => {
             cookies.set('avatarURL', avatarURL);
             cookies.set('hashedPassword', hashedPassword);
         }
+
+        window.location.reload();
+    }
+
+    const handleGuestMode = async () => {
+
+
+        const { data: { token, userId, fullName, username } } = await axios.post(`${URL}/guest`);
+
+        cookies.set('token', token);
+        cookies.set('username', username);
+        cookies.set('fullName', fullName);
+        cookies.set('userId', userId);
 
         window.location.reload();
     }
@@ -138,6 +153,15 @@ const Auth = () => {
                              }
                              <span onClick={switchMode}>
                              {isSignup ? 'Sign In' : 'Sign Up'}
+                             </span>
+                        </p>
+                    </div>
+
+                    <div className="auth__form-container_fields-account">
+                        <p>
+                            Login as Guest?
+                             <span onClick={handleGuestMode}>
+                             Guest
                              </span>
                         </p>
                     </div>
